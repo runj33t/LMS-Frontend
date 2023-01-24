@@ -1,3 +1,11 @@
+// We also need babel-plugin-styled-components. 
+// It helps to consistently hashed component classNames between 
+// environments (a must for server-side rendering).
+
+// npm install --save-dev babel-plugin-styled-components
+
+// Then create a .babelrc file in the root of the project.
+
 import Document from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 

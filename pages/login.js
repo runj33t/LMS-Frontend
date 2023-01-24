@@ -1,6 +1,15 @@
+import styled from "styled-components";
+
+const Container = styled.div`
+    text-align: center;
+    align-items: center;
+`
+
 const LogIn = () => {
     return (
-        <h1>LogIn Here</h1>
+        <Container>
+            <h1>Log In Here</h1>
+        </Container>
     ); 
 };
 

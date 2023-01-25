@@ -68,7 +68,7 @@ const Navbar = () => {
               </NavItem>
               <NavItem>
                 <NavLinks href={"/register"} onClick={closeMobileMenu}>
-                  My Learning
+                  Register
                 </NavLinks>
               </NavItem>
             </NavMenu>

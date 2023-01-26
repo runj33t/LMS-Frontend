@@ -4,7 +4,7 @@ import GlobalStyle from "../globalStyles";
 import Navbar from "../components/Navigation/Navbar";
 import "../public/css/styles.css"
 
-const MyApp = ({Component, pageProps}) => {
+const MyApp = ({ Component, pageProps }) => {
     return (
         <div>
             <GlobalStyle />

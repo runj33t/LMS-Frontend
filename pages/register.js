@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 
+// axios is used to make get and post requests, it a promise-based hhtp client fofr node.js
+import axios from 'axios';
+
 const Container = styled.div`
   width: 100vw;
   height: 80vh;
@@ -50,57 +53,63 @@ const Button = styled.button`
 
 const register = () => {
 
-    const [name, setName] = useState(null);
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [confirmPassword, setConfirmPassword] = useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.table({ name, email, password, confirmPassword });
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.table({ name, email, password, confirmPassword });
 
-    return (
-        <div>
-            <Container>
-                <Wrapper>
-                    <Title>CREATE AN ACCOUNT</Title>
-                    <Form onSubmit={handleSubmit}>
-                        <Input
-                            type='text'
-                            placeholder="Name"
-                            autoFocus
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
+    // syntax of post request - axios.post(url_endpoint, {data, to, be, sent,})
+    const { data } = await axios.post('http://localhost:8000/api/register', {
+      name, email, password, confirmPassword,
+    });
+    console.log('Register Response', data);
+  }
 
-                        <Input
-                            type='email'
-                            placeholder="Enter Email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+  return (
+    <div>
+      <Container>
+        <Wrapper>
+          <Title>CREATE AN ACCOUNT</Title>
+          <Form onSubmit={handleSubmit}>
+            <Input
+              type='text'
+              placeholder="Name"
+              autoFocus
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
 
-                        <Input
-                            type='password'
-                            placeholder="Enter Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
+            <Input
+              type='email'
+              placeholder="Enter Email"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
-                        <Input
-                            type='password'
-                            placeholder="Confirm Password"
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
+            <Input
+              type='password'
+              placeholder="Enter Password"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
-                        <Button type="submit">SING UP</Button>
-                    </Form>
-                </Wrapper>
-            </Container>
-        </div>
-    );
+            <Input
+              type='password'
+              placeholder="Confirm Password"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+
+            <Button type="submit">SING UP</Button>
+          </Form>
+        </Wrapper>
+      </Container>
+    </div>
+  );
 };
 
 export default register;

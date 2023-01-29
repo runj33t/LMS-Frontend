@@ -1,3 +1,5 @@
+// this page serves as homepage
+
 import styled from "styled-components";
 
 const Content = styled.div`

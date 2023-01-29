@@ -1,4 +1,5 @@
-// _app.js is the main file where all the components are rendered.
+// _app.js :- Next.js uses the App component to initalize pages.
+// this component runs before any other page gets ready for users to see.
 // so be it global component which should pe present in all the pages like Navbar
 // or global css or sytles should be a imported here.
 

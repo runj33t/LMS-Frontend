@@ -74,7 +74,8 @@ const register = () => {
       setLoading(true);
 
       // syntax of post request - axios.post(url_endpoint, {data, to, be, sent,})
-      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API}/register`, {
+      // const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API}/register`, {
+      const { data } = await axios.post(`/api/register`, {        // since we have setup our own front end server so we can use directly /api for backend api calls
         name,
         email,
         password,

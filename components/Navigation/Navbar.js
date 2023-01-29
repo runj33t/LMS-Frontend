@@ -10,7 +10,7 @@ import {
   NavLinks,
 } from "./Navbar.elements";
 
-import { IconContext } from "react-icons"; 
+import { IconContext } from "react-icons";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -63,7 +63,7 @@ const Navbar = () => {
               </NavItem>
               <NavItem>
                 <NavLinks href={"/login"} onClick={closeMobileMenu}>
-                  Account
+                  LogIn
                 </NavLinks>
               </NavItem>
               <NavItem>

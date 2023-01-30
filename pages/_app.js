@@ -13,14 +13,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "../components/Navigation/Navbar";
 import "../public/css/styles.css"
 
+// Context Provider
+import { Provider } from "../context";
+
 const MyApp = ({ Component, pageProps }) => {
     return (
-        <div>
-            <ToastContainer position="top-right"/>
+        <Provider>
+            <ToastContainer position="top-right" />
             <GlobalStyle />
             <Navbar />
             <Component {...pageProps} />
-        </div>
+        </Provider>
     );
 }
 

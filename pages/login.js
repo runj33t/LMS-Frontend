@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";   // useContext for global state
+import { Context } from "../context";           // to be able to use the Context
+import { useRouter } from "next/router";        // by using this useRouter we can route to any page after some actions, like after log in we can redirect to home page!
 import styled from "styled-components";
 
 // axios is used to make get and post requests, it a promise-based hhtp client fofr node.js
@@ -55,67 +57,90 @@ const Button = styled.button`
 `;
 
 const LogIn = () => {
-    const [email, setEmail] = useState("Rahul@gmail.com");
-    const [password, setPassword] = useState("Password12");
+  const [email, setEmail] = useState("Rahul@gmail.com");
+  const [password, setPassword] = useState("Password12");
 
-    // state for loading effect
-    const [loading, setLoading] = useState(false);
+  // destructuring the global state
+  const { state, dispatch } = useContext(Context);
+  console.log("STATE  : ", state);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // console.table({ email, password });
+  // Navigation / Router
+  const router = useRouter();
 
-        try {
+  // state for loading effect
+  const [loading, setLoading] = useState(false);
 
-            // set loading to true
-            setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.table({ email, password });
 
-            const { data } = await axios.post(`/api/login`, {        // since we have setup our own front end server so we can use directly /api for backend api calls
-                email,
-                password,
-            });
-            console.log('LogIn Response', data);
-            toast.success('LogIn Success');
+    try {
 
-            setLoading(false);
-        } catch (err) {
-            toast.error(err.response.data);
-            setLoading(false);
-        }
-    };
-    return (
-        <div>
-            <Container>
-                <Wrapper>
-                    {loading ?
-                        <Title>Logging In</Title>
-                        :
-                        <Title>LOGIN</Title>
-                    }
-                    <Form onSubmit={handleSubmit}>
+      // set loading to true
+      setLoading(true);
 
-                        <Input
-                            type='email'
-                            placeholder="Enter Email"
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            required
-                        />
+      const { data } = await axios.post(`/api/login`, {        // since we have setup our own front end server so we can use directly /api for backend api calls
+        email,
+        password,
+      });
 
-                        <Input
-                            type='password'
-                            placeholder="Enter Password"
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
-                            required
-                        />
+      // console.log is just for debugging purpose
+      console.log('LogIn Response', data);
 
-                        <Button type="submit">LogIn</Button>
-                    </Form>
-                </Wrapper>
-            </Container>
-        </div>
-    );
+      // dispatching data to the context
+      dispatch({
+        // see here we will dispatch type and payload
+        type: "LOGIN",
+        payload: data,
+      });
+
+      toast.success('LogIn Success');
+
+      // since context does not save data of global states like Redux , so we need to store the information in the localStorage
+      window.localStorage.setItem('user', JSON.stringify(data));
+
+      // redirect after login
+      router.push("/");
+
+      setLoading(false);
+    } catch (err) {
+      toast.error(err.response.data);
+      setLoading(false);
+    }
+  };
+  return (
+    <div>
+      <Container>
+        <Wrapper>
+          {loading ?
+            <Title>Logging In</Title>
+            :
+            <Title>LOGIN</Title>
+          }
+          <Form onSubmit={handleSubmit}>
+
+            <Input
+              type='email'
+              placeholder="Enter Email"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+              required
+            />
+
+            <Input
+              type='password'
+              placeholder="Enter Password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              required
+            />
+
+            <Button type="submit">LogIn</Button>
+          </Form>
+        </Wrapper>
+      </Container>
+    </div>
+  );
 };
 
 export default LogIn;

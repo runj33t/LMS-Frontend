@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { Context } from "../../context";
 import {
   Nav,
   NavbarContainer,
@@ -16,6 +17,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
 const Navbar = () => {
+  const { state, dispatch } = useContext(Context);
+  // destructuring the user from the global state
+  const { user } = state;
+  // console.log(user);
+
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
@@ -61,21 +67,41 @@ const Navbar = () => {
                   Home
                 </NavLinks>
               </NavItem>
-              <NavItem>
-                <NavLinks href={"/login"} onClick={closeMobileMenu}>
-                  LogIn
-                </NavLinks>
-              </NavItem>
-              <NavItem>
-                <NavLinks href={"/register"} onClick={closeMobileMenu}>
-                  Register
-                </NavLinks>
-              </NavItem>
-              <NavItem>
-                <NavLinks href={"/userprofile"} onClick={closeMobileMenu}>
-                  MyAccount
-                </NavLinks>
-              </NavItem>
+              {
+                // below is an example of how to render conditionally
+                // if user if logged in i.e. user in global state is null then show register and log in links 
+              }
+              {
+                user === null && (
+                  <>
+                    <NavItem>
+                      <NavLinks href={"/login"} onClick={closeMobileMenu}>
+                        LogIn
+                      </NavLinks>
+                    </NavItem>
+                    <NavItem>
+                      <NavLinks href={"/register"} onClick={closeMobileMenu}>
+                        Register
+                      </NavLinks>
+                    </NavItem>
+                  </>
+                )
+              }
+
+              {
+                // if user is not null in global state that means someone is logged in then show MyAccount link 
+              }
+              {
+                user !== null && (
+                  <>
+                    <NavItem>
+                      <NavLinks href={"/userprofile"} onClick={closeMobileMenu}>
+                        MyAccount
+                      </NavLinks>
+                    </NavItem>
+                  </>
+                )
+              }
             </NavMenu>
           </NavbarContainer>
         </Nav>

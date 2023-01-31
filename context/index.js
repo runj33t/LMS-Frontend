@@ -4,6 +4,9 @@
 // more features like adding to wish list or making a purchase only when user is logged in. 
 
 import { useReducer, createContext, useEffect } from 'react'
+import { useRouter } from 'next/router';
+
+import axios from 'axios';
 
 // initial state 
 const initialState = {
@@ -43,11 +46,54 @@ const Provider = ({ children }) => {
 
     // since, unlike redux, for Context we first need to save data to the local storage then we can have the data in the context
     // state. We can do that by useEffect
-    useEffect(()=>{
+    useEffect(() => {
         dispatch({
-            type:"LOGIN",
+            type: "LOGIN",
             payload: JSON.parse(window.localStorage.getItem("user")),       // this line means anything present in the localStorage having name user, grab that and save in context state
         });
+    }, []);
+
+    const router = useRouter();
+
+    // it is like a middle ware that will run before any axios get post request to check if everything is fine or not
+    axios.interceptors.response.use(
+        function (response) {
+            // any status code of 2XX will trigger thiis function, i.e. everything is fine (like user loggedIn, payment success etc.)
+            return response;
+        },
+        function (error) {
+            // any status other than 2XX i.e. something is not fine (like uesr token expired, errors etc)
+            let res = error.response;
+            if (res.status === 401 && res.config && !res.config.__isRetryRequest) {
+                return new Promise((resolve, reject) => {
+                    axios
+                        .get("/api/logout")
+                        .then((data) => {
+                            console.log('/401 error > logout');
+                            dispatch({ type: "LOGOUT" });
+                            window.localStorage.removeItem("user");
+                            router.push("/login")
+                        })
+                        .catch((err) => {
+                            console.log("AXIOS INTERCEPTORS ERROR : ", err);
+                        })
+                })
+            }
+            return Promise.reject(error);
+        }
+    )
+
+    // CSRF token protection
+    useEffect(() => {
+        const getCsrfToken = async () => {
+            const { data } = await axios.get('/api/csrf-token');
+            // console.log("CSRF :", data);
+            axios.defaults.headers["X-CSRF-Token"] = data.getCsrfToken;
+            // if the csrf token that we sent and the token that is generated from backend is not same
+            // an error will occur hence security is imporved
+        }
+
+        getCsrfToken();
     }, []);
 
 

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";   // useContext for global state
+import { Context } from "../context";           // to be able to use the Context
+import { useRouter } from "next/router";        // by using this useRouter we can route to any page after some actions, like after log in we can redirect to home page!
 import styled from "styled-components";
 
 // axios is used to make get and post requests, it a promise-based hhtp client fofr node.js
@@ -60,6 +62,22 @@ const register = () => {
   const [email, setEmail] = useState("Rahul@gmail.com");
   const [password, setPassword] = useState("Password12");
   const [confirmPassword, setConfirmPassword] = useState("Password12");
+
+  // destructuring the global state
+  const { state, dispatch } = useContext(Context);
+  // console.log("STATE  : ", state);
+
+  // destructuring the user from the global state
+  const { user } = state;
+
+  // Navigation / Router
+  const router = useRouter();
+
+  // redirect user to homepage when already logged in (security and ui change so that logged in user can access register or login page)
+  useEffect(() => {
+    // if user is not null in gloabl state i.e. someone is logged In, redirect them to home page
+    if (user !== null) router.push("/");
+  }, [user]); // whenever value of user changes, useEffect will work
 
   // state for loading effect
   const [loading, setLoading] = useState(false);

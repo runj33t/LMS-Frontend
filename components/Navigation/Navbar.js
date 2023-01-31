@@ -71,6 +71,11 @@ const Navbar = () => {
                   Register
                 </NavLinks>
               </NavItem>
+              <NavItem>
+                <NavLinks href={"/userprofile"} onClick={closeMobileMenu}>
+                  MyAccount
+                </NavLinks>
+              </NavItem>
             </NavMenu>
           </NavbarContainer>
         </Nav>

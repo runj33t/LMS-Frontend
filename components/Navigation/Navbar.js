@@ -95,7 +95,7 @@ const Navbar = () => {
                 user !== null && (
                   <>
                     <NavItem>
-                      <NavLinks href={"/userprofile"} onClick={closeMobileMenu}>
+                      <NavLinks href={"/user/userprofile"} onClick={closeMobileMenu}>
                         MyAccount
                       </NavLinks>
                     </NavItem>

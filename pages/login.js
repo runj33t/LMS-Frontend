@@ -94,7 +94,7 @@ const LogIn = () => {
       });
 
       // console.log is just for debugging purpose
-      console.log('LogIn Response', data);
+      // console.log('LogIn Response', data);
 
       // dispatching data to the context
       dispatch({

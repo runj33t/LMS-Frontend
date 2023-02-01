@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";   // useContext for glo
 import { Context } from "../context";           // to be able to use the Context
 import { useRouter } from "next/router";        // by using this useRouter we can route to any page after some actions, like after log in we can redirect to home page!
 import styled from "styled-components";
+import Link from "next/link";
 
 // axios is used to make get and post requests, it a promise-based hhtp client fofr node.js
 import axios from 'axios';
@@ -146,6 +147,8 @@ const LogIn = () => {
 
             <Button type="submit">LogIn</Button>
           </Form>
+          <br />
+          <p>Forgot Password ? <Link href={'/user/resetPassword'} style={{textDecoration:'none', color:'black'}}>Reset Here</Link> </p>
         </Wrapper>
       </Container>
     </div>

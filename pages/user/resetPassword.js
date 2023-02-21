@@ -78,7 +78,7 @@ const resetPassword = () => {
         if (user != null) {
             router.push("/user/userprofile");
         }
-    }, []);
+    }, [user]);
 
     // this handleSubmot will send code to the email submitted
     const handleSubmit = async (e) => {
